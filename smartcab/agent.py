@@ -158,10 +158,7 @@ class LearningAgent(Agent):
                 action = random.choice(self.possible_actions)
             else:
                 actions = self.get_actions(state)
-                i=0
-                if len(actions)>1:
-                    i = random.randrange(0,len(actions)-1)
-                action = actions[i]
+                action  = random.choice(actions)
               
         else:
             action = random.choice(self.possible_actions)
