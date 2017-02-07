@@ -3,6 +3,7 @@ import math
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
+Optimized = True
 
 class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
@@ -40,7 +41,7 @@ class LearningAgent(Agent):
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
 
-        #self.epsilon = self.epsilon -0.05
+       
         if testing == True:
             self.epsilon = 0
             self.alha = 0
@@ -48,7 +49,10 @@ class LearningAgent(Agent):
         #self.epsilon = pow(0.85,self.trialNumber)
         #self.epsion = 1.0/pow(self.trialNumber,2)
         #self.epsilon = 1/(self.trialNumber+1)
-            self.epsilon = self.epsilon -0.00025*self.trialNumber
+            if Optimized:
+                self.epsilon = self.epsilon -0.00025*self.trialNumber
+            else:
+                self.epsilon = self.epsilon -0.05
         #self.epsilon = math.cos(0.4*self.trialNumber)
         return None
 
@@ -70,7 +74,7 @@ class LearningAgent(Agent):
         #   If it is not, create a dictionary in the Q-table for the current 'state'
         #   For each action, set the Q-value for the state-action pair to 0 
         
-        state = (waypoint,inputs['light'],inputs['oncoming'])
+        state = (waypoint,inputs['light'],inputs['oncoming'],inputs['left'])
 
         return state
 
@@ -248,7 +252,7 @@ def run():
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
     
-    sim = Simulator(env,optimized = True,log_metrics=True,update_delay=0.01)
+    sim = Simulator(env,optimized = Optimized,log_metrics=True,update_delay=0.01)
     sim.display=False
 
     ##############
